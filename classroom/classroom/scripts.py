@@ -1,19 +1,6 @@
 import random
 from collections import defaultdict
 
-pupils_lst = ['Alisa', 'Filipp', 'Katya', 'Polina', 'Vadim']
-# pupils_lst = ['Alisa']
-
-
-# variants = int(input('Enter number of variants: \n'))
-# rows = int(input('Enter number of rows: \n'))
-# desks = int(input('Enter number of rows of desks: \n'))
-
-# columns = variants * rows
-
-columns = 2
-desks = 3
-
 
 class Pupil:
     def __init__(self, name):
@@ -21,117 +8,115 @@ class Pupil:
 
 
 class Seat:
-    def __init__(self, column, desk, pupil):
+    def __init__(self, column, desk):
         self.column = column
         self.desk = desk
-        self.pupil = pupil
+        self.pupil = None
 
 
-seats = defaultdict(list)
+class Classroom:
+    def __init__(self, columns, desks):
+        self.columns = columns
+        self.desks = desks
+        self.seats = self.create_seats()
 
-for i in range(columns):
-    for j in range(desks):
-        seats[i].append(Seat(i, j, None))
+    def create_seats(self):
+        seats = defaultdict(list)
+        for i in range(self.columns):
+            for j in range(self.desks):
+                seats[i].append(Seat(i, j))
+        return seats
 
-print('МЕСТА: ', seats)
+    def assign_pupils_to_seats(self, pupils):
+        shuffled_pupils = random.sample(pupils, k=len(pupils))
+        seats_with_pupils = defaultdict(list)
+        remaining_desks = self.desks
 
-for i in range(columns):
-    for seat in seats[i]:
-        print('***: ', seat.column, seat.desk)
+        while remaining_desks > 0:
+            keys = random.sample(list(self.seats), self.columns)
+            for i in range(self.columns):
+                value = self.seats[keys[i]]
+                seat = value.pop(random.randint(0, len(value)-1))
+                try:
+                    setattr(seat, 'pupil', shuffled_pupils.pop(0))
+                except IndexError:
+                    print('No more pupils available.')
+                seats_with_pupils[seat.column].append(seat)
+            remaining_desks -= 1
+        return seats_with_pupils
 
-pupils = [Pupil(pupil) for pupil in pupils_lst]
+    def sort_seats(self):
+        for i in range(self.columns):
+            self.seats[i].sort(key=lambda seat: seat.desk)
 
-print('УЧЕНИКИ: ', pupils)
+    def rearrange_seats(self):
+        for i in range(self.columns):
+            var = self.seats[i]
+            count = 0
+            for index, seat in reversed(list(enumerate(var))):
+                if seat.pupil is not None:
+                    count += 1
+                else:
+                    if count == 0:
+                        continue
+                    else:
+                        for j in range(index, index+count):
+                            seat = var[j]
+                            next_seat = var[j+1]
+                            searched_pupil = next_seat.pupil
+                            setattr(next_seat, 'pupil', None)
+                            setattr(seat, 'pupil', searched_pupil)
 
-shuffled_pupils = random.sample(pupils, k=len(pupils))
-print('ПЕРЕПУТАННЫЕ УЧЕНИКИ: ', shuffled_pupils)
+    def check_order_of_seats_append(self):
+        for i in range(self.columns):
+            for seat in self.seats[i]:
+                print('***: ', seat.column, seat.desk)
 
-k = desks
-print('КОЛИЧЕСТВО РЯДОВ ПАРТ В КЛАССЕ: ', k)
-seats_with_pupils = defaultdict(list)
+    def check_free_seats(self):
+        for i in range(self.columns):
+            print(self.seats[i])
+            for j in range(len(self.seats[i])):
+                try:
+                    print(self.seats[i][j].pupil.name)
+                except AttributeError:
+                    print('Это место осталось свободным')
 
-while k > 0:
-    keys = random.sample(list(seats), columns)
-    print('ПЕРЕМЕШАННЫЕ КЛЮЧИ: ', keys)
-    for i in range(columns):
-        value = seats[keys[i]]
-        print(f'ЗНАЧЕНИЕ КЛЮЧА {i}: ', value)
-        seat = value.pop(random.randint(0, len(value)-1))
-        print('ИЗВЛЕЧЕННОЕ МЕСТО: ', seat)
-        try:
-            setattr(seat, 'pupil', shuffled_pupils.pop(0))
-        except IndexError:
-            print('УЧЕНИЧКИ ЗАКОНЧИЛИСЬ :-)')
-        column_row = getattr(seat, 'column')
-        desk_row = getattr(seat, 'desk')
-        # seats_with_pupils[column_row].insert(desk_row, seat)
-        seats_with_pupils[column_row].append(seat)
-        print(column_row, desk_row)
 
-    k -= 1
+def main():
+    pupils_lst = ['Alisa', 'Filipp', 'Katya', 'Polina', 'Vadim']
+    # pupils_lst = ['Alisa']
+    # variants = int(input('Enter number of variants: \n'))
+    # rows = int(input('Enter number of rows: \n'))
+    # desks = int(input('Enter number of rows of desks: \n'))
+    variants = 2
+    rows = 1
+    desks = 3
+    columns = variants * rows
 
-for i in range(columns):
-    for seat in seats_with_pupils[i]:
-        print('&&&: ', seat.column, seat.desk)
+    pupils = [Pupil(pupil) for pupil in pupils_lst]
 
-for i in range(columns):
-    seats_with_pupils[i].sort(key=lambda seat: seat.desk)
-    # sorted(seats_with_pupils[i], key=lambda seat: seat.desk)
+    klass = Classroom(columns, desks)
 
-for i in range(columns):
-    for seat in seats_with_pupils[i]:
-        print('###: ', seat.column, seat.desk)
+    print('МЕСТА: ', klass.seats)
 
-print('СМОТРИ СЮДА: СЛОВАРЬ С УСАЖЕННЫМИ УЧЕНИКАМИ: ', seats_with_pupils)
-for i in range(columns):
-    print(seats_with_pupils[i])
-    for j in range(len(seats_with_pupils[i])):
-        try:
-            print(seats_with_pupils[i][j].pupil.name)
-        except AttributeError:
-            print('Это место осталось свободным')
+    klass.check_order_of_seats_append()
 
-print('МЕСТА: ', seats_with_pupils)
+    print('УЧЕНИКИ: ', pupils)
 
-# for seat in seats_with_pupils[0]:
-#     print('###: ', seat.column, seat.desk)
+    klass.seats = klass.assign_pupils_to_seats(pupils)
 
-for i in range(columns):
-    ryad_s_kotorim_rabotaem = seats_with_pupils[i]
-    print(ryad_s_kotorim_rabotaem)
-    count = 0
-    for index, seat in reversed(list(enumerate(ryad_s_kotorim_rabotaem))):
-        if seat.pupil is not None:
-            count += 1
-            print('Раз!')
-        else:
-            if count == 0:
-                print('Два!')
-                continue
-            else:
-                print('Три!')
-                for j in range(index, index+count):
-                    seat = ryad_s_kotorim_rabotaem[j]
-                    print('ВАЖНО!', seat)
-                    print('Четыре!')
-                    next_seat = ryad_s_kotorim_rabotaem[j+1]
-                    print('Следующее: ', next_seat)
-                    print('Индекс места, с которым работаем: ', j)
-                    print('Индекс следующего места: ', j+1)
-                    searched_pupil = next_seat.pupil
-                    print('Найденный ученик: ', searched_pupil)
-                    setattr(next_seat, 'pupil', None)
-                    setattr(seat, 'pupil', searched_pupil)
-                    print('ПЕРЕСАДИЛИ!')
-    print(count)
+    klass.check_order_of_seats_append()
 
-print('СМОТРИ СЮДА: СЛОВАРЬ С пересаженными УЧЕНИКАМИ: ', seats_with_pupils)
-for i in range(columns):
-    print(seats_with_pupils[i])
-    for j in range(len(seats_with_pupils[i])):
-        try:
-            print(seats_with_pupils[i][j].pupil.name)
-        except AttributeError:
-            print('Это место осталось свободным')
+    klass.sort_seats()
 
-print(seats_with_pupils)
+    klass.check_order_of_seats_append()
+
+    klass.check_free_seats()
+
+    klass.rearrange_seats()
+
+    klass.check_free_seats()
+
+
+if __name__ == '__main__':
+    main()
