@@ -1,20 +1,28 @@
-from django.http import HttpResponse
 from django.shortcuts import render
 
 
-# def index(request):
-#     template = 'seats/index.html'
-#     title = 'Главная страница'
-#     text = 'Главная страница'
-#     context = {
-#         'title': title,
-#         'text': text,
-#     }
-
-#     return render(request, template, context)
-
 def index(request):
-    return HttpResponse(
-        'Ты <i>не можешь</i> получить правильные <b>ответы</b>,<br> '
-        'если у тебя нет правильных <s>вопросов</s> запросов.'
-    )
+    template = 'seats/index.html'
+    title = 'Главная страница'
+    text = 'Главная страница'
+    some = 'Some'
+    context = {
+        'title': title,
+        'text': text,
+        'some': some,
+    }
+
+    return render(request, template, context)
+
+def test(request):
+    template = 'seats/test.html'
+    title = 'Тестовая страница'
+    text = 'Тестовая страница'
+    some = 'Some Test'
+    context = {
+        'title': title,
+        'text': text,
+        'some': some,
+    }
+
+    return render(request, template, context)

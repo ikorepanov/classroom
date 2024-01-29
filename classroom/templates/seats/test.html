@@ -6,13 +6,13 @@
 
 {% block content %}
   <div class="card col-6">
-    <h5 class="card-header">Основное содержимое страницы</h5>
+    <h5 class="card-header">Тестовая страница</h5>
     <div class="card-body">
       <h6 class="card-subtitle">{{ some }}</h6>
       <p>
         {{ text }}
       </p>
-      <a href="{% url 'seats:test' %}" class="btn btn-primary">Тестовая страница</a>
+      <a href="{% url 'seats:index' %}" class="btn btn-primary">Вернуться на главную</a>
     </div>
   </div>
 {% endblock %}
