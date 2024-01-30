@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock title %}
+
+{% block content %}
+  <div class="card col-6">
+    <h5 class="card-header">ЭТО УСПЕХ!</h5>
+    <div class="card-body">
+      <h6 class="card-subtitle">{{ some }}</h6>
+      <p>
+        {{ text }}
+      </p>
+      <a href="{% url 'seats:index' %}" class="btn btn-primary">Вернуться на главную</a>
+    </div>
+  </div>
+{% endblock %}

@@ -5,6 +5,24 @@
 {% endblock title %}
 
 {% block content %}
+<style> {% comment%} NB! Возможно, тег не на своём месте. Проверить {% endcomment %}
+  .desk {
+    width: 200px;
+    height: 100px;
+    background-color: #8B4513;
+    position: relative;
+  }
+
+  .name-inscription {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    color: #FFF;
+  }
+</style>
   <div class="card col-6">
     <h5 class="card-header">Основное содержимое страницы</h5>
     <div class="card-body">
@@ -13,6 +31,33 @@
         {{ text }}
       </p>
       <a href="{% url 'seats:test' %}" class="btn btn-primary">Тестовая страница</a>
+      <div>
+        <form method="post" action="{% url 'seats:index' %}"> 
+          {% csrf_token %} 
+          {{ form.as_p }}
+          {% comment %} <input class="btn btn-primary" type="submit" value="Submit"> {% endcomment %}
+          <button class="btn btn-primary" type="submit">Сгенерировать рассадку</button>
+        </form>
+      </div>
+
+      {% if seats %}
+        <p>РАССАДКА:</p>
+        <ul>
+          {% for group, seat_list in seats.items %}
+            <li>Group {{ group }}:</li>
+            <ul>
+                {% for seat in seat_list %}
+                    <li>{{ seat }}</li>
+                    <div class="desk">
+                      <div class="desk-top"></div>
+                      <p class="name-inscription">{{ seat.pupil }}</p>
+                    </div>
+                {% endfor %}
+            </ul>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
     </div>
   </div>
 {% endblock %}

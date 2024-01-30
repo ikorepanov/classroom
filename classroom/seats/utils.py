@@ -6,12 +6,18 @@ class Pupil:
     def __init__(self, name):
         self.name = name
 
+    def __str__(self):
+        return self.name
+
 
 class Seat:
     def __init__(self, column, desk):
         self.column = column
         self.desk = desk
         self.pupil = None
+
+    def __str__(self):
+        return f"Seat - Desk: {self.desk}, Column: {self.column}, Pupil: {self.pupil}"
 
 
 class Classroom:
@@ -82,16 +88,19 @@ class Classroom:
                     print('Это место осталось свободным')
 
 
-def main():
-    pupils_lst = ['Alisa', 'Filipp', 'Katya', 'Polina', 'Vadim']
+# def main():
+def main(desks, columns, pupils_lst):
+    # pupils_lst = ['Alisa', 'Filipp', 'Katya', 'Polina', 'Vadim']
+
     # pupils_lst = ['Alisa']
     # variants = int(input('Enter number of variants: \n'))
     # rows = int(input('Enter number of rows: \n'))
     # desks = int(input('Enter number of rows of desks: \n'))
-    variants = 2
-    rows = 1
-    desks = 3
-    columns = variants * rows
+
+    # variants = 2
+    # rows = 1
+    # desks = 3
+    # columns = variants * rows
 
     pupils = [Pupil(pupil) for pupil in pupils_lst]
 
@@ -116,6 +125,8 @@ def main():
     klass.rearrange_seats()
 
     klass.check_free_seats()
+
+    return klass.seats
 
 
 if __name__ == '__main__':
