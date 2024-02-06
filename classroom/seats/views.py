@@ -21,6 +21,9 @@ def index(request):
             columns = variants * rows
             print(columns)
             seats = dict(main(desks, columns, pupils_lst))  # NB! Операцию произвести в utils.py
+            seats = dict(sorted(seats.items(), reverse=True))
+            for key, value in seats.items():
+                value = value.reverse()
             print('РАССАДКА: ', seats)
 
     else:
@@ -31,7 +34,10 @@ def index(request):
         'text': text,
         'some': some,
         'form': form,
-        'seats': seats
+        'seats': seats,
+        'range': range(desks),
+        # 'range_i': range(rows),
+        # 'range_j': range(desks),
     }
     print('КОНТЕКСТ: ', context)
     return render(request, template, context)

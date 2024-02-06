@@ -41,21 +41,81 @@
       </div>
 
       {% if seats %}
-        <p>РАССАДКА:</p>
-        <ul>
-          {% for group, seat_list in seats.items %}
-            <li>Group {{ group }}:</li>
-            <ul>
-                {% for seat in seat_list %}
-                    <li>{{ seat }}</li>
-                    <div class="desk">
-                      <div class="desk-top"></div>
-                      <p class="name-inscription">{{ seat.pupil }}</p>
-                    </div>
-                {% endfor %}
-            </ul>
+
+        {% comment %} <p>РАССАДКА:</p>
+        <table>
+          <tr>
+            {% for group, seat_list in seats.items %}
+              <td>Group {{ group }}:
+                <ul>
+                    {% for seat in seat_list %}
+                        <li>{{ seat }}</li>
+                        <div class="desk">
+                          <div class="desk-top"></div>
+                          <p class="name-inscription">{{ seat.pupil }}</p>
+                        </div>
+                    {% endfor %}
+                </ul>
+              </td>
+            {% endfor %}
+          </tr>
+        </table> {% endcomment %}
+
+        <p>РАССАДКА 2:</p>
+        <table>
+          <tr>
+            {% for value in seats.values %}
+              <td>
+                {{ value.0 }}
+                <div class="desk">
+                  <div class="desk-top"></div>
+                  <p class="name-inscription">{{ value.0.pupil }}</p>
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            {% for value in seats.values %}
+              <td>
+                {{ value.1 }}
+                <div class="desk">
+                  <div class="desk-top"></div>
+                  <p class="name-inscription">{{ value.1.pupil }}</p>
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            {% for value in seats.values %}
+              <td>
+                {{ value.2 }}
+                <div class="desk">
+                  <div class="desk-top"></div>
+                  <p class="name-inscription">{{ value.2.pupil }}</p>
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+        </table>
+
+        <p>РАССАДКА 3:</p>
+        <table>
+          {% for i in range %}
+            <tr>
+              {% for value in seats.values %}
+                <td>
+                  {{ forloop.counter0 }}
+                  {{ value.forloop.counter0 }}
+                  <div class="desk">
+                    <div class="desk-top"></div>
+                    <p class="name-inscription">{{ value.i.pupil }}</p>
+                  </div>
+                </td>
+              {% endfor %}
+            </tr>
           {% endfor %}
-        </ul>
+        </table>
+
       {% endif %}
 
     </div>
