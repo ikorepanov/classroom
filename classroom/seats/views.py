@@ -24,6 +24,8 @@ def index(request):
             seats = dict(sorted(seats.items(), reverse=True))
             for key, value in seats.items():
                 value = value.reverse()
+            list_of_lists = list(seats.values())
+            transposed_list = list(map(list, zip(*list_of_lists)))
             print('РАССАДКА: ', seats)
 
     else:
@@ -35,9 +37,9 @@ def index(request):
         'some': some,
         'form': form,
         'seats': seats,
-        'range': range(desks),
-        # 'range_i': range(rows),
-        # 'range_j': range(desks),
+        'transposed_list': transposed_list,
+        # 'rows': rows,
+        'variants': variants,
     }
     print('КОНТЕКСТ: ', context)
     return render(request, template, context)

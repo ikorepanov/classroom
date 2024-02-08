@@ -7,8 +7,8 @@
 {% block content %}
 <style> {% comment%} NB! Возможно, тег не на своём месте. Проверить {% endcomment %}
   .desk {
-    width: 200px;
-    height: 100px;
+    width: 100px;
+    height: 80px;
     background-color: #8B4513;
     position: relative;
   }
@@ -21,6 +21,25 @@
     font-family: 'Arial', sans-serif;
     font-size: 16px;
     color: #FFF;
+  }
+
+  .prokhod {
+    width: 40px;
+    {% comment %} height: 80px; {% endcomment %}
+    {% comment %} background-color: #000000; {% endcomment %}
+    position: relative;
+  }
+
+  .whiteboard {
+    width: 300px;
+    height: 20px;
+    background-color: #dddddd;
+    position: relative;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0 20px;
   }
 </style>
   <div class="card col-6">
@@ -61,7 +80,7 @@
           </tr>
         </table> {% endcomment %}
 
-        <p>РАССАДКА 2:</p>
+        {% comment %} <p>РАССАДКА 2:</p>
         <table>
           <tr>
             {% for value in seats.values %}
@@ -96,24 +115,36 @@
               </td>
             {% endfor %}
           </tr>
-        </table>
+        </table> {% endcomment %}
 
         <p>РАССАДКА 3:</p>
         <table>
-          {% for i in range %}
+          {% for element_group in transposed_list %}
             <tr>
-              {% for value in seats.values %}
+              {% for element in element_group %}
                 <td>
-                  {{ forloop.counter0 }}
-                  {{ value.forloop.counter0 }}
                   <div class="desk">
-                    <div class="desk-top"></div>
-                    <p class="name-inscription">{{ value.i.pupil }}</p>
+                    {% comment %} <div class="desk-top"></div> {% endcomment %}
+                    <p class="name-inscription">{{ element.pupil }}</p>
                   </div>
                 </td>
+                {% if forloop.counter|divisibleby:variants and not forloop.last %}
+                  <td>
+                    <div class="prokhod">
+                      {% comment %} {{ forloop.counter }} {% endcomment %}
+                    </div>
+                  </td>
+                {% endif %}
               {% endfor %}
             </tr>
           {% endfor %}
+          <tr>
+            <td colspan="100%" style="text-align: center;">
+              <div class="whiteboard">
+                Доска
+              </div>
+            </td>
+          </tr>
         </table>
 
       {% endif %}

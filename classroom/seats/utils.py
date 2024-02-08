@@ -33,23 +33,98 @@ class Classroom:
                 seats[i].append(Seat(i, j))
         return seats
 
+# # 1. Перемешиваем всё каждый раз
+#     def assign_pupils_to_seats(self, pupils):
+#         shuffled_pupils = random.sample(pupils, k=len(pupils))
+#         seats_with_pupils = defaultdict(list)
+#         remaining_desks = self.desks
+
+#         while remaining_desks > 0:
+#             keys = random.sample(list(self.seats), self.columns)  # NB!
+#             for i in range(self.columns):
+#                 value = self.seats[keys[i]]
+#                 seat = value.pop(random.randint(0, len(value)-1))  # NB!
+#                 try:
+#                     setattr(seat, 'pupil', shuffled_pupils.pop(0))
+#                 except IndexError:
+#                     print('No more pupils available.')
+#                 seats_with_pupils[seat.column].append(seat)
+#             remaining_desks -= 1
+#         return seats_with_pupils
+
+# # 2. Перемешиваем всё (учеников, ключи) - один раз
+    # def assign_pupils_to_seats(self, pupils):
+    #     shuffled_pupils = random.sample(pupils, k=len(pupils))
+    #     seats_with_pupils = defaultdict(list)
+    #     keys = random.sample(list(self.seats), self.columns)
+    #     remaining_desks = self.desks
+    #     while remaining_desks > 0:
+    #         for key in keys:
+    #             seat = self.seats[key][-remaining_desks]
+    #             try:
+    #                 setattr(seat, 'pupil', shuffled_pupils.pop())
+    #             except IndexError:
+    #                 print('No more pupils available.')
+    #             seats_with_pupils[key].append(seat)
+    #         remaining_desks -= 1
+    #     return seats_with_pupils
+
+# 3. Перемешиваем только учеников
     def assign_pupils_to_seats(self, pupils):
         shuffled_pupils = random.sample(pupils, k=len(pupils))
         seats_with_pupils = defaultdict(list)
-        remaining_desks = self.desks
 
+        keys = range(self.columns)
+        remaining_desks = self.desks
         while remaining_desks > 0:
-            keys = random.sample(list(self.seats), self.columns)
-            for i in range(self.columns):
-                value = self.seats[keys[i]]
-                seat = value.pop(random.randint(0, len(value)-1))
+            for key in keys:
+                seat = self.seats[key][-remaining_desks]
                 try:
-                    setattr(seat, 'pupil', shuffled_pupils.pop(0))
+                    setattr(seat, 'pupil', shuffled_pupils.pop())
                 except IndexError:
                     print('No more pupils available.')
-                seats_with_pupils[seat.column].append(seat)
+                seats_with_pupils[key].append(seat)
             remaining_desks -= 1
         return seats_with_pupils
+
+# # 4. Перемешиваем учеников один раз, ставим на произвольные места в колонке (а не по порядку). Колонки идут по порядку
+#     def assign_pupils_to_seats(self, pupils):
+#         shuffled_pupils = random.sample(pupils, k=len(pupils))
+#         shuffled_pupils = random.choices(pupils, k=len(pupils))
+#         seats_with_pupils = defaultdict(list)
+
+#         keys = range(self.columns)
+#         remaining_desks = self.desks
+#         while remaining_desks > 0:
+#             for key in keys:
+#                 value = self.seats[key]
+#                 seat = value.pop(random.randint(0, len(value)-1))
+#                 try:
+#                     setattr(seat, 'pupil', shuffled_pupils.pop())
+#                 except IndexError:
+#                     print('No more pupils available.')
+#                 seats_with_pupils[key].append(seat)
+#             remaining_desks -= 1
+#         return seats_with_pupils
+
+# # 5. Перемешиваем всё, кроме учеников
+#     def assign_pupils_to_seats(self, pupils):
+#         shuffled_pupils = pupils
+#         seats_with_pupils = defaultdict(list)
+#         remaining_desks = self.desks
+
+#         while remaining_desks > 0:
+#             keys = random.sample(list(self.seats), self.columns)  # NB!
+#             for i in range(self.columns):
+#                 value = self.seats[keys[i]]
+#                 seat = value.pop(random.randint(0, len(value)-1))  # NB!
+#                 try:
+#                     setattr(seat, 'pupil', shuffled_pupils.pop(0))
+#                 except IndexError:
+#                     print('No more pupils available.')
+#                 seats_with_pupils[seat.column].append(seat)
+#             remaining_desks -= 1
+#         return seats_with_pupils
 
     def sort_seats(self):
         for i in range(self.columns):
