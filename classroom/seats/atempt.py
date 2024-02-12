@@ -11,7 +11,6 @@ def generate_seating_order(number_of_linear_arrays,
     seating_order = []
 
     while True:
-        print('Цикл начинается здесь')
         for i in range(len(indices)):
             if count == number_of_seating_arrangements:
                 break
@@ -21,13 +20,10 @@ def generate_seating_order(number_of_linear_arrays,
             array_probs = np.array(probabilities)
             index = np.random.choice(indices, p=array_probs)
             if index == last_index and count % number_of_linear_arrays == 0:
-                print('Прерывание!', index)
                 break
             mentioned_indices.append(index)
             count += 1
-            print('РЕЗУЛЬТАТ: ', index)
             seating_order.append(index)
-            # print('Количество операций генерации индекса: ', count)
         last_index = index
         mentioned_indices.clear()
         if count == number_of_seating_arrangements:
