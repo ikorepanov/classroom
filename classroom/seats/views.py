@@ -1,45 +1,34 @@
-from django.shortcuts import redirect, render
-from .forms import SeatsForm
-from .utils import main
+from django.shortcuts import render
+from .forms import ArrangementForm, SomeForm
 
 
 def index(request):
     template = 'seats/index.html'
     title = 'Главная страница'
     text = 'Главная страница'
-    some = 'Some'
-    seats = None
+    some = 'Card Subtitle'
 
     if request.method == 'POST':
-        form = SeatsForm(request.POST)
-        if form.is_valid():
-            variants = form.cleaned_data['variants']
-            rows = form.cleaned_data['rows']
-            desks = form.cleaned_data['desks']
-            pupils_lst = form.cleaned_data['pupils_lst'].split()
-            print(variants, rows, desks, pupils_lst)
-            columns = variants * rows
-            print(columns)
-            seats = dict(main(desks, columns, pupils_lst))  # NB! Операцию произвести в utils.py
-            seats = dict(sorted(seats.items(), reverse=True))
-            for key, value in seats.items():
-                value = value.reverse()
-            list_of_lists = list(seats.values())
-            transposed_list = list(map(list, zip(*list_of_lists)))
-            print('РАССАДКА: ', seats)
+        arrangementform = ArrangementForm(request.POST)
+        someform = SomeForm(request.POST)
+        if arrangementform.is_valid():
+            columns = arrangementform.cleaned_data['columns']
+            rows = arrangementform.cleaned_data['rows']
+            print('\n')
+            print('Columns, rows: ', columns, rows)
+            arrangementform.save()
+        return render(request, template, {'arrangementform': arrangementform})
 
     else:
-        form = SeatsForm()
+        arrangementform = ArrangementForm()
+        someform = SomeForm()
 
     context = {
         'title': title,
         'text': text,
         'some': some,
-        'form': form,
-        'seats': seats,
-        'transposed_list': transposed_list,
-        # 'rows': rows,
-        'variants': variants,
+        'arrangementform': arrangementform,
+        'someform': someform,
     }
     print('КОНТЕКСТ: ', context)
     return render(request, template, context)

@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Arrangement, Seat, Student
+
+admin.site.register(Arrangement)
+admin.site.register(Seat)
+admin.site.register(Student)

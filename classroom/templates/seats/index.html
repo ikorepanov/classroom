@@ -52,71 +52,21 @@
       <a href="{% url 'seats:test' %}" class="btn btn-primary">Тестовая страница</a>
       <div>
         <form method="post" action="{% url 'seats:index' %}"> 
-          {% csrf_token %} 
-          {{ form.as_p }}
+          {% csrf_token %}
+          {{ someform.as_p }}
+          {{ arrangementform.as_p }}
           {% comment %} <input class="btn btn-primary" type="submit" value="Submit"> {% endcomment %}
           <button class="btn btn-primary" type="submit">Сгенерировать рассадку</button>
         </form>
       </div>
 
-      {% if seats %}
-
-        {% comment %} <p>РАССАДКА:</p>
-        <table>
-          <tr>
-            {% for group, seat_list in seats.items %}
-              <td>Group {{ group }}:
-                <ul>
-                    {% for seat in seat_list %}
-                        <li>{{ seat }}</li>
-                        <div class="desk">
-                          <div class="desk-top"></div>
-                          <p class="name-inscription">{{ seat.pupil }}</p>
-                        </div>
-                    {% endfor %}
-                </ul>
-              </td>
-            {% endfor %}
-          </tr>
-        </table> {% endcomment %}
-
-        {% comment %} <p>РАССАДКА 2:</p>
-        <table>
-          <tr>
-            {% for value in seats.values %}
-              <td>
-                {{ value.0 }}
-                <div class="desk">
-                  <div class="desk-top"></div>
-                  <p class="name-inscription">{{ value.0.pupil }}</p>
-                </div>
-              </td>
-            {% endfor %}
-          </tr>
-          <tr>
-            {% for value in seats.values %}
-              <td>
-                {{ value.1 }}
-                <div class="desk">
-                  <div class="desk-top"></div>
-                  <p class="name-inscription">{{ value.1.pupil }}</p>
-                </div>
-              </td>
-            {% endfor %}
-          </tr>
-          <tr>
-            {% for value in seats.values %}
-              <td>
-                {{ value.2 }}
-                <div class="desk">
-                  <div class="desk-top"></div>
-                  <p class="name-inscription">{{ value.2.pupil }}</p>
-                </div>
-              </td>
-            {% endfor %}
-          </tr>
-        </table> {% endcomment %}
-
+      {% comment %} {% if students %}
+        {% for student in students %}
+          student.name
+        {% endfor %}
+      {% endif %} {% endcomment %}
+      
+<!--      {% if seats %}
         <p>РАССАДКА 3:</p>
         <table>
           {% for element_group in transposed_list %}
@@ -146,9 +96,8 @@
             </td>
           </tr>
         </table>
-
       {% endif %}
-
+-->
     </div>
   </div>
 {% endblock %}
