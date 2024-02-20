@@ -46,10 +46,6 @@
   ```
   python manage.py migrate
   ```
-- запустите тесты:
-  ```
-  python manage.py test
-  ```
 - создайте суперпользователя:
   ```
   python manage.py createsuperuser
