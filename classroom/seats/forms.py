@@ -1,6 +1,6 @@
-from django import forms
+# from django import forms
 
-from .models import Arrangement, Seat, Student
+# from .models import Arrangement, Seat, Student
 
 
 # class SeatsForm(forms.Form):
@@ -10,11 +10,11 @@ from .models import Arrangement, Seat, Student
 #     pupils_lst = forms.CharField(label="Ученики")
 
 
-class SomeForm(forms.Form):
-    pupils_lst = forms.CharField(label="Ученики")
+# class SomeForm(forms.Form):
+#     pupils_lst = forms.CharField(label="Ученики")
 
 
-class ArrangementForm(forms.ModelForm):
-    class Meta:
-        model = Arrangement
-        fields = ('month', 'year', 'columns', 'rows')
+# class ArrangementForm(forms.ModelForm):
+#     class Meta:
+#         model = Arrangement
+#         fields = ('month', 'year', 'columns', 'rows')
